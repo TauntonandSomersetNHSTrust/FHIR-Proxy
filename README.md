@@ -1,8 +1,8 @@
-<img alttext="Somerset NHS Foundation Trust Logo" src="https://www.somersetft.nhs.uk/wp-content/uploads/2020/03/Asset-1.png" width=auto height=100 align="right" style="padding: 10px;background:white" />
+<img alttext="Somerset NHS Foundation Trust Logo" src="https://www.somersetft.nhs.uk/wp-content/uploads/2020/03/Asset-1.png" width=auto height=95 align="right" style="padding: 10px;background:white" />
 
 # Somerset NHS Foundation Trust - FHIR Proxy
 
-Somerset NHS Foundation Trust Mirth Connect FHIR Listener channels adapted for use with various clinical systems within the organisations ecosystem.
+>Somerset NHS Foundation Trust Mirth Connect FHIR Listener channels adapted for use with various clinical systems within the organisations ecosystem.
 
 ## Introduction
 
