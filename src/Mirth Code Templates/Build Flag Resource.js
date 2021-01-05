@@ -23,15 +23,17 @@ function buildFlagResource(data) {
 		resourceType: 'Flag'
 	};
 	// Add meta data
-	if (getResultSetString(data, 'Last_Updated') != undefined &&
-		getResultSetString(data, 'Last_Updated').substring(0, 1) != 'T' &&
-		getResultSetString(data, 'Last_Updated').substring(0, 4) != '1900') {
-		resource['meta']['Last_Updated'] = getResultSetString(data, 'Last_Updated');
+	if (
+		result.Last_Updated !== undefined &&
+		result.Last_Updated.substring(0, 1) != 'T' &&
+		result.Last_Updated.substring(0, 4) != '1900'
+	) {
+		resource.meta.lastUpdated = result.Last_Updated;
 	}
 	resource.id = newStringOrUndefined(result.PT_alertID);
 	resource.status = newStringOrUndefined(result.status);
 
-	if (result.alertCatID != undefined) {
+	if (result.alertCatID !== undefined) {
 		resource.category = {
 			coding: [{
 				system: 'https://fhir.tst.nhs.uk',
@@ -47,14 +49,14 @@ function buildFlagResource(data) {
 		coding: []
 	};
 
-	if (result.snomed != undefined) {
+	if (result.snomed !== undefined) {
 		var snomedCode = {
 			system: 'http://snomed.info/sct',
 			code: newStringOrUndefined(result.snomed),
 			display: newStringOrUndefined(result.alert)
 		};
 		resource.code.coding.push(snomedCode);
-	} else if (result.localID != undefined) {
+	} else if (result.localID !== undefined) {
 		var tstCode = {
 			system: 'https://fhir.tst.nhs.uk',
 			code: newStringOrUndefined(result.localID),
@@ -66,7 +68,7 @@ function buildFlagResource(data) {
 	resource.period = {};
 
 	if (
-		result.started != undefined &&
+		result.started !== undefined &&
 		result.started.substring(0, 1) != 'T' &&
 		result.started.substring(0, 4) != '1900'
 	) {
@@ -74,7 +76,7 @@ function buildFlagResource(data) {
 	}
 
 	if (
-		result.ended != undefined &&
+		result.ended !== undefined &&
 		result.ended.substring(0, 1) != 'T' &&
 		result.ended.substring(0, 4) != '1900'
 	) {

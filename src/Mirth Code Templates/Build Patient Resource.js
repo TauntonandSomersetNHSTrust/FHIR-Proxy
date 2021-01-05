@@ -11,15 +11,15 @@ function buildPatientResource(data) {
 	const result = getResultSet(data);
 
 	if (
-		result.NHS_Verified == undefined ||
-		result.NHS_Verified == null ||
+		result.NHS_Verified === undefined ||
+		result.NHS_Verified === null ||
 		result.NHS_Verified == '0'
 	) {
 		result.NHS_Verified = '2';
 		result.nhsNumberTraceStatusDesc = 'Number present but not traced';
 	}
 
-	if (result.dod == undefined || result.dod == null) {
+	if (result.dod === undefined || result.dod === null) {
 		result.dod = false;
 	} else {
 		result.dod = true;
@@ -84,7 +84,7 @@ function buildPatientResource(data) {
 
 	// Add meta data
 	if (
-		result.Last_Updated != undefined &&
+		result.Last_Updated !== undefined &&
 		result.Last_Updated.substring(0, 1) != 'T' &&
 		result.Last_Updated.substring(0, 1) != '1900'
 	) {
@@ -92,7 +92,7 @@ function buildPatientResource(data) {
 	}
 
 	// Add NHS No
-	if (result.NHS != undefined) {
+	if (result.NHS !== undefined) {
 		const nhsIdentifier = {
 			use: newStringOrUndefined('official'),
 			system: newStringOrUndefined('https://fhir.nhs.uk/Id/nhs-number'),
@@ -128,7 +128,7 @@ function buildPatientResource(data) {
 	// Add Next of kin contact details
 	//Presented in a nested array like:
 	/// system,code,display,contactName,contactSurname,contactPhone|system,code,display,contactName,contactSurname,contactPhone|system,code,display,contactName,contactSurname,contactPhone
-	if (result.FHIRNOKs != undefined){
+	if (result.FHIRNOKs !== undefined){
 		const emptyContact = {
 			relationship: {
 				coding: [{
@@ -150,7 +150,7 @@ function buildPatientResource(data) {
 				}
 		};
 		
-		const NOKSplit = result.FHIRNOKs.split('\\|')
+		const NOKSplit = result.FHIRNOKs.split('\\|');
 		
 		for (var i=0; i < NOKSplit.length; i++){
 			
@@ -159,8 +159,6 @@ function buildPatientResource(data) {
 			var NOKArray = NOKSplit[i].toString();
 			
 			var components = NOKArray.split('\\,');
-			
-			logger.debug(components[4])
 			
 			NOKEntry.relationship.coding[0].system = newStringOrUndefined(
 				components[0]
@@ -211,7 +209,7 @@ function buildPatientResource(data) {
 
 	// Add Telecom contact details
 	const telecom = [];
-	if (result.Home_Number != undefined) {
+	if (result.Home_Number !== undefined) {
 		const homePhone = {
 			system: newStringOrUndefined('phone'),
 			value: newStringOrUndefined(result.Home_Number),
@@ -219,7 +217,7 @@ function buildPatientResource(data) {
 		};
 		telecom.push(homePhone);
 	}
-	if (result.Work_Number != undefined) {
+	if (result.Work_Number !== undefined) {
 		const mobilePhone = {
 			system: newStringOrUndefined('phone'),
 			value: newStringOrUndefined(result.Work_Number),
@@ -234,7 +232,7 @@ function buildPatientResource(data) {
 	// Extensions (Care Connect or otherwise)
 	const extension = [];
 	// Add Ethnic Category extension
-	if (result.ethnicCode != undefined) {
+	if (result.ethnicCode !== undefined) {
 		const ethCatExtension = {
 			url: newStringOrUndefined(
 				'https://fhir.hl7.org.uk/STU3/StructureDefinition/Extension-CareConnect-EthnicCategory-1'
@@ -264,8 +262,8 @@ function buildPatientResource(data) {
 
 	// Add Marital Status
 	if (
-		result.maritalStatusCode != undefined &&
-		result.maritalStatusDesc != undefined
+		result.maritalStatusCode !== undefined &&
+		result.maritalStatusDesc !== undefined
 	) {
 		resource.maritalStatus = {
 			coding: [
@@ -281,7 +279,7 @@ function buildPatientResource(data) {
 	}
 
 	// If patient has a 'Do Not Distribute Patient Address' alert, strip out contact details
-	if (result.DND != undefined) {
+	if (result.DND !== undefined) {
 		delete resource.telecom;
 		delete resource.address;
 		resource.meta.security = [
