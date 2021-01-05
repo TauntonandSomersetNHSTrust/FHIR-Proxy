@@ -20,7 +20,7 @@ function buildFlagResource(data) {
 	};
 	// Add meta data
 	if(
-	result.Last_Updated !== undefined &&
+	result.Last_Updated &&
 	result.Last_Updated.substring(0, 1) != 'T' && 
 	result.Last_Updated.substring(0, 1) != '1900'
 	) {
@@ -38,7 +38,7 @@ function buildFlagResource(data) {
 	resource.code = {
 		coding: []
 	};
-	if(result.proceduretype !== undefined) {
+	if(result.proceduretype) {
 		const procedureSplit = result.proceduretype.split('\\|');
 		for(var i = 0; i < procedureSplit.length; i++) {
 			var procedureArray = procedureSplit[i].toString();

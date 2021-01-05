@@ -24,7 +24,7 @@ function buildFlagResource(data) {
 	};
 	// Add meta data
 	if (
-		result.Last_Updated !== undefined &&
+		result.Last_Updated &&
 		result.Last_Updated.substring(0, 1) != 'T' &&
 		result.Last_Updated.substring(0, 4) != '1900'
 	) {
@@ -33,7 +33,7 @@ function buildFlagResource(data) {
 	resource.id = newStringOrUndefined(result.PT_alertID);
 	resource.status = newStringOrUndefined(result.status);
 
-	if (result.alertCatID !== undefined) {
+	if (result.alertCatID ) {
 		resource.category = {
 			coding: [{
 				system: 'https://fhir.tst.nhs.uk',
@@ -49,14 +49,14 @@ function buildFlagResource(data) {
 		coding: []
 	};
 
-	if (result.snomed !== undefined) {
+	if (result.snomed ) {
 		var snomedCode = {
 			system: 'http://snomed.info/sct',
 			code: newStringOrUndefined(result.snomed),
 			display: newStringOrUndefined(result.alert)
 		};
 		resource.code.coding.push(snomedCode);
-	} else if (result.localID !== undefined) {
+	} else if (result.localID ) {
 		var tstCode = {
 			system: 'https://fhir.tst.nhs.uk',
 			code: newStringOrUndefined(result.localID),
@@ -68,7 +68,7 @@ function buildFlagResource(data) {
 	resource.period = {};
 
 	if (
-		result.started !== undefined &&
+		result.started  &&
 		result.started.substring(0, 1) != 'T' &&
 		result.started.substring(0, 4) != '1900'
 	) {
@@ -76,7 +76,7 @@ function buildFlagResource(data) {
 	}
 
 	if (
-		result.ended !== undefined &&
+		result.ended  &&
 		result.ended.substring(0, 1) != 'T' &&
 		result.ended.substring(0, 4) != '1900'
 	) {

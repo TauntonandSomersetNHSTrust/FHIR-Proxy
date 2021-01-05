@@ -84,7 +84,7 @@ function buildPatientResource(data) {
 
 	// Add meta data
 	if (
-		result.Last_Updated !== undefined &&
+		result.Last_Updated &&
 		result.Last_Updated.substring(0, 1) != 'T' &&
 		result.Last_Updated.substring(0, 1) != '1900'
 	) {
@@ -92,7 +92,7 @@ function buildPatientResource(data) {
 	}
 
 	// Add NHS No
-	if (result.NHS !== undefined) {
+	if (result.NHS ) {
 		const nhsIdentifier = {
 			use: newStringOrUndefined('official'),
 			system: newStringOrUndefined('https://fhir.nhs.uk/Id/nhs-number'),
@@ -128,7 +128,7 @@ function buildPatientResource(data) {
 	// Add Next of kin contact details
 	//Presented in a nested array like:
 	/// system,code,display,contactName,contactSurname,contactPhone|system,code,display,contactName,contactSurname,contactPhone|system,code,display,contactName,contactSurname,contactPhone
-	if (result.FHIRNOKs !== undefined){
+	if (result.FHIRNOKs){
 		const emptyContact = {
 			relationship: {
 				coding: [{
@@ -209,7 +209,7 @@ function buildPatientResource(data) {
 
 	// Add Telecom contact details
 	const telecom = [];
-	if (result.Home_Number !== undefined) {
+	if (result.Home_Number) {
 		const homePhone = {
 			system: newStringOrUndefined('phone'),
 			value: newStringOrUndefined(result.Home_Number),
@@ -217,7 +217,7 @@ function buildPatientResource(data) {
 		};
 		telecom.push(homePhone);
 	}
-	if (result.Work_Number !== undefined) {
+	if (result.Work_Number) {
 		const mobilePhone = {
 			system: newStringOrUndefined('phone'),
 			value: newStringOrUndefined(result.Work_Number),
@@ -232,7 +232,7 @@ function buildPatientResource(data) {
 	// Extensions (Care Connect or otherwise)
 	const extension = [];
 	// Add Ethnic Category extension
-	if (result.ethnicCode !== undefined) {
+	if (result.ethnicCode) {
 		const ethCatExtension = {
 			url: newStringOrUndefined(
 				'https://fhir.hl7.org.uk/STU3/StructureDefinition/Extension-CareConnect-EthnicCategory-1'
@@ -262,8 +262,8 @@ function buildPatientResource(data) {
 
 	// Add Marital Status
 	if (
-		result.maritalStatusCode !== undefined &&
-		result.maritalStatusDesc !== undefined
+		result.maritalStatusCode &&
+		result.maritalStatusDesc
 	) {
 		resource.maritalStatus = {
 			coding: [
@@ -279,7 +279,7 @@ function buildPatientResource(data) {
 	}
 
 	// If patient has a 'Do Not Distribute Patient Address' alert, strip out contact details
-	if (result.DND !== undefined) {
+	if (result.DND) {
 		delete resource.telecom;
 		delete resource.address;
 		resource.meta.security = [

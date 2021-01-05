@@ -46,7 +46,7 @@ function buildConditionResource(data) {
 		resource.onsetDateTime = newStringOrUndefined(result.dateOnset);
 	}
 	
-	if (result.authHCP !== undefined)
+	if (result.authHCP)
 	{
 		resource.asserter = {};
 		resource.asserter.display = result.authHCP;
@@ -58,7 +58,7 @@ function buildConditionResource(data) {
 		
 	// Add meta data
 	if (
-		result.Last_Updated !== undefined &&
+		result.Last_Updated &&
 		result.Last_Updated.substring(0, 1) != 'T' &&
 		result.Last_Updated.substring(0, 4) != '1900'
 	) {

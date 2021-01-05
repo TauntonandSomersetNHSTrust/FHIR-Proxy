@@ -27,14 +27,14 @@ function buildEncounterResource(data) {
 
 	// Add meta data
 	if (
-		result.Last_Updated !== undefined &&
+		result.Last_Updated &&
 		result.Last_Updated.substring(0, 1) != 'T' &&
 		result.Last_Updated.substring(0, 4) != '1900'
 	) {
 		resource.meta.lastUpdated = result.Last_Updated;
 	}
 
-	if (result.className !== undefined) {
+	if (result.className) {
 		resource.class = {
 			system: 'https://hl7.org/fhir/v3/ActEncounterCode',
 			code: newStringOrUndefined(result.classCode),
@@ -48,7 +48,7 @@ function buildEncounterResource(data) {
 	 * don't display any planned/future encounters as they're out of scope
 	 */
 	if (
-		result.Start_Date !== undefined &&
+		result.Start_Date &&
 		result.Start_Date.substring(0, 1) != 'T' &&
 		result.Start_Date.substring(0, 4) != '1900' &&
 		Math.ceil(
@@ -76,7 +76,7 @@ function buildEncounterResource(data) {
 	}
 
 	if (
-		result.status !== undefined &&
+		result.status &&
 		result.status == 'planned'
 	) {
 		resource.meta.tag = [
@@ -106,7 +106,7 @@ function buildEncounterResource(data) {
 	//system,code,display|system,code,display|system,code,display
 	////
 	if (
-		result.encountertype !== undefined
+		result.encountertype
 	) {
 		
 		const encounterSplit = result.encountertype.split('\\|');
@@ -131,7 +131,7 @@ function buildEncounterResource(data) {
 		}
 	} else {
 		const primitiveEncounterType = JSON.parse(JSON.stringify(emptyType));
-		if (result.Service_Code !== undefined) {
+		if (result.Service_Code) {
 			primitiveEncounterType.coding[0].system = 'https://fhir.nhs.uk/STU3/CodeSystem/Specialty-1'
 			;
 			primitiveEncounterType.coding[0].code = newStringOrUndefined(
@@ -148,8 +148,8 @@ function buildEncounterResource(data) {
 	resource.participant = [];
 	
  	if (
-		result.encounterParticipantIndividualCode_admitting !== undefined &&
-		result.encounterParticipantIndividualCode_discharging !== undefined &&
+		result.encounterParticipantIndividualCode_admitting  &&
+		result.encounterParticipantIndividualCode_discharging  &&
 		result.encounterParticipantIndividualCode_discharging ==
 			result.encounterParticipantIndividualCode_admitting
 	) {
@@ -186,7 +186,7 @@ function buildEncounterResource(data) {
 	}
 
 	if (resource.participant.length === 0) {
-		if (result.encounterParticipantIndividualCode_admitting !== undefined) {
+		if (result.encounterParticipantIndividualCode_admitting ) {
 			const participantAdmitter = {
 				type: [
 					{
@@ -212,7 +212,7 @@ function buildEncounterResource(data) {
 			resource.participant.push(participantAdmitter);
 		}
 		if (
-			result.encounterParticipantIndividualCode_discharging !== undefined
+			result.encounterParticipantIndividualCode_discharging
 		) {
 			const participantDischarger = {
 				type: [
@@ -239,7 +239,7 @@ function buildEncounterResource(data) {
 			resource.participant.push(participantDischarger);
 		}
 	}
-	if (result.encounterParticipantIndividualCode_opattending !== undefined) {
+	if (result.encounterParticipantIndividualCode_opattending ) {
 		const participantConsultant = {
 			type: [
 				{
@@ -264,14 +264,14 @@ function buildEncounterResource(data) {
 
 	resource.period = {};
 	if (
-		result.Start_Date !== undefined &&
+		result.Start_Date  &&
 		result.Start_Date.substring(0, 1) != 'T' &&
 		result.Start_Date.substring(0, 4) != '1900'
 	) {
 		resource.period.start = result.Start_Date;
 	}
 	if (
-		result.End_Date !== undefined &&
+		result.End_Date  &&
 		result.End_Date.substring(0, 1) != 'T' &&
 		result.End_Date.substring(0, 4) != '1900'
 	) {
@@ -282,13 +282,13 @@ function buildEncounterResource(data) {
 	resource.hospitalization = {};
 
 	if (
-		result.encounterAdmissionmethodCodingCode !== undefined ||
-		result.encounterDischargemethodCodingCode !== undefined
+		result.encounterAdmissionmethodCodingCode  ||
+		result.encounterDischargemethodCodingCode 
 	) {
 		resource.hospitalization.extension = [];
 	}
 
-	if (result.encounterAdmissionmethodCodingCode !== undefined) {
+	if (result.encounterAdmissionmethodCodingCode ) {
 		const admissionMethod = {
 			url:
 				'https://fhir.hl7.org.uk/STU3/StructureDefinition/Extension-CareConnect-AdmissionMethod-1',
@@ -308,7 +308,7 @@ function buildEncounterResource(data) {
 		resource.hospitalization.extension.push(admissionMethod);
 	}
 
-	if (result.encounterDischargemethodCodingCode !== undefined) {
+	if (result.encounterDischargemethodCodingCode ) {
 		const dischargeMethod = {
 			url:
 				'https://fhir.hl7.org.uk/STU3/StructureDefinition/Extension-CareConnect-DischargeMethod-1',
@@ -328,7 +328,7 @@ function buildEncounterResource(data) {
 		resource.hospitalization.extension.push(dischargeMethod);
 	}
 
-	if (result.encounterHospitalizationAdmitsourceCodingCode !== undefined) {
+	if (result.encounterHospitalizationAdmitsourceCodingCode ) {
 		resource.hospitalization.admitSource = {
 			coding: [
 				{
@@ -363,7 +363,7 @@ function buildEncounterResource(data) {
 
 	// Add location details
 	if (
-		result.encounterClassCode !== undefined &&
+		result.encounterClassCode  &&
 		result.encounterClassCode == 'XXIMP'
 	) {
 		resource.location = [];
@@ -382,7 +382,7 @@ function buildEncounterResource(data) {
 		};
 
 		if (
-			result.encounterLocation1Identifier !== undefined &&
+			result.encounterLocation1Identifier  &&
 			typeof resource.period.start !== 'undefined'
 		) {
 			const admittingWard = JSON.parse(JSON.stringify(emptyLocation));
@@ -399,7 +399,7 @@ function buildEncounterResource(data) {
 		}
 
 		if (
-			result.encounterLocation2Identifier !== undefined &&
+			result.encounterLocation2Identifier  &&
 			typeof resource.period.end !== 'undefined'
 		) {
 			const dischargeWard = JSON.parse(JSON.stringify(emptyLocation));
