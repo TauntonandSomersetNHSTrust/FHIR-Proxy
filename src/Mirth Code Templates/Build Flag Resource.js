@@ -68,7 +68,7 @@ function buildFlagResource(data) {
 	resource.period = {};
 
 	if (
-		result.started  &&
+		result.started &&
 		result.started.substring(0, 1) != 'T' &&
 		result.started.substring(0, 4) != '1900'
 	) {
@@ -76,7 +76,7 @@ function buildFlagResource(data) {
 	}
 
 	if (
-		result.ended  &&
+		result.ended &&
 		result.ended.substring(0, 1) != 'T' &&
 		result.ended.substring(0, 4) != '1900'
 	) {

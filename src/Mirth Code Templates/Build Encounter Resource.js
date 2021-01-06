@@ -100,7 +100,7 @@ function buildEncounterResource(data) {
 			}
 		]
 	};
-    
+
 	////
 	//Array structure should be:
 	//system,code,display|system,code,display|system,code,display
@@ -148,8 +148,8 @@ function buildEncounterResource(data) {
 	resource.participant = [];
 	
  	if (
-		result.encounterParticipantIndividualCode_admitting  &&
-		result.encounterParticipantIndividualCode_discharging  &&
+		result.encounterParticipantIndividualCode_admitting &&
+		result.encounterParticipantIndividualCode_discharging &&
 		result.encounterParticipantIndividualCode_discharging ==
 			result.encounterParticipantIndividualCode_admitting
 	) {
@@ -264,14 +264,14 @@ function buildEncounterResource(data) {
 
 	resource.period = {};
 	if (
-		result.Start_Date  &&
+		result.Start_Date &&
 		result.Start_Date.substring(0, 1) != 'T' &&
 		result.Start_Date.substring(0, 4) != '1900'
 	) {
 		resource.period.start = result.Start_Date;
 	}
 	if (
-		result.End_Date  &&
+		result.End_Date &&
 		result.End_Date.substring(0, 1) != 'T' &&
 		result.End_Date.substring(0, 4) != '1900'
 	) {
@@ -282,7 +282,7 @@ function buildEncounterResource(data) {
 	resource.hospitalization = {};
 
 	if (
-		result.encounterAdmissionmethodCodingCode  ||
+		result.encounterAdmissionmethodCodingCode ||
 		result.encounterDischargemethodCodingCode 
 	) {
 		resource.hospitalization.extension = [];
@@ -363,7 +363,7 @@ function buildEncounterResource(data) {
 
 	// Add location details
 	if (
-		result.encounterClassCode  &&
+		result.encounterClassCode &&
 		result.encounterClassCode == 'XXIMP'
 	) {
 		resource.location = [];
@@ -382,7 +382,7 @@ function buildEncounterResource(data) {
 		};
 
 		if (
-			result.encounterLocation1Identifier  &&
+			result.encounterLocation1Identifier &&
 			typeof resource.period.start !== 'undefined'
 		) {
 			const admittingWard = JSON.parse(JSON.stringify(emptyLocation));
@@ -399,7 +399,7 @@ function buildEncounterResource(data) {
 		}
 
 		if (
-			result.encounterLocation2Identifier  &&
+			result.encounterLocation2Identifier &&
 			typeof resource.period.end !== 'undefined'
 		) {
 			const dischargeWard = JSON.parse(JSON.stringify(emptyLocation));
