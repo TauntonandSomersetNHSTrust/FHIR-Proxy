@@ -6,7 +6,7 @@
 
 ### Purpose
 
-This repo contains the various changes made to existing works by [Colleagues working at YeoviL District Hospital](https://github.com/Fdawgs/ydh-fhir-listeners) to use within our own organisation. The influences of this base will feature heavily throughout the repo, however will diverge where faced with the variation of clinical systems used in the our organisation.
+This repo contains the various changes made to existing works by [Colleagues working at Yeovil District Hospital](https://github.com/Fdawgs/ydh-fhir-listeners) to use within our own organisation. The influences of this base will feature heavily throughout the repo, however will diverge where faced with the variation of clinical systems used in the our organisation.
 
 This documentation is written under the assumption that the reader has prior experience using [Mirth Connect](https://github.com/nextgenhealthcare/connect).
 
