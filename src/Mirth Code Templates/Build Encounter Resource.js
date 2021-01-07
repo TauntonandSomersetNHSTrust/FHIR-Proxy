@@ -192,24 +192,6 @@ function buildEncounterResource(data) {
 		}
 		// otherwise, add individually
 		else {
-			if(result.admHCP) {
-				const participantAdmitter = {
-					type: [{
-						coding: [{
-							system: 'https://www.hl7.org/fhir/valueset-encounter-participant-type.html',
-							code: 'ADM',
-							display: 'admitter'
-						}]
-					}],
-					individual: {
-						identifier: {
-							value: result.encounterParticipantIndividualCode_admitting
-						},
-						display: result.admHCP
-					}
-				};
-				resource.participant.push(participantAdmitter);
-			}
 			if(result.disHCP) {
 				const participantDischarger = {
 					type: [{
@@ -227,6 +209,24 @@ function buildEncounterResource(data) {
 					}
 				};
 				resource.participant.push(participantDischarger);
+			}
+			if(result.admHCP) {
+				const participantAdmitter = {
+					type: [{
+						coding: [{
+							system: 'https://www.hl7.org/fhir/valueset-encounter-participant-type.html',
+							code: 'ADM',
+							display: 'admitter'
+						}]
+					}],
+					individual: {
+						identifier: {
+							value: result.encounterParticipantIndividualCode_admitting
+						},
+						display: result.admHCP
+					}
+				};
+				resource.participant.push(participantAdmitter);
 			}
 		}
 	} 
