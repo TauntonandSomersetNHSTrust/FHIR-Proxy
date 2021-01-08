@@ -23,6 +23,51 @@ function buildFlagResource(data) {
 		resourceType: 'Flag'
 	};
 	// Add meta data
+
+	var SiderPermittedSnomedAlerts = ["304253006", "225915006", "704659007", "395073001", "32000005", "713673000", "15188001", "1855002", "13790001000004100", "103735009", "735324008","313214000","248062006"];
+	var snomedCodeCheck = "";
+	snomedCodeCheck += result.snomed.toString();
+
+	var SiderPermittedLocalAlerts = ["2449"];
+	var localCodeCheck = "";
+	localCodeCheck += result.lookupInstanceID.toString();
+
+	if (
+		SiderPermittedSnomedAlerts.indexOf(snomedCodeCheck) >= 0
+	){
+		resource.meta.tag = [
+			{
+				system:
+					'https://fhir.blackpear.com/ui/shared-care-record-visibility',
+				code: 'summary',
+				display: 'Display in Summary and Detail View'
+			}
+		];
+	}
+	else if (
+		SiderPermittedLocalAlerts.indexOf(localCodeCheck) >= 0
+	){
+		resource.meta.tag = [
+			{
+				system:
+					'https://fhir.blackpear.com/ui/shared-care-record-visibility',
+				code: 'summary',
+				display: 'Display in Summary and Detail View'
+			}
+		];
+	}
+	else{
+		resource.meta.tag = [
+			{
+				system:
+					'https://fhir.blackpear.com/ui/shared-care-record-visibility',
+				code: 'none',
+				display: 'Do not Display'
+			}
+		];
+		}
+
+	
 	if (
 		result.Last_Updated &&
 		result.Last_Updated.substring(0, 1) != 'T' &&
@@ -56,10 +101,10 @@ function buildFlagResource(data) {
 			display: newStringOrUndefined(result.alert)
 		};
 		resource.code.coding.push(snomedCode);
-	} else if (result.localID ) {
+	} else if (result.lookupInstanceID ) {
 		var tstCode = {
 			system: 'https://fhir.tst.nhs.uk',
-			code: newStringOrUndefined(result.localID),
+			code: newStringOrUndefined(result.lookupInstanceID),
 			display: newStringOrUndefined(result.alert)
 		};
 		resource.code.coding.push(tstCode);
@@ -68,7 +113,7 @@ function buildFlagResource(data) {
 	resource.period = {};
 
 	if (
-		result.started &&
+		result.started  &&
 		result.started.substring(0, 1) != 'T' &&
 		result.started.substring(0, 4) != '1900'
 	) {
@@ -76,7 +121,7 @@ function buildFlagResource(data) {
 	}
 
 	if (
-		result.ended &&
+		result.ended  &&
 		result.ended.substring(0, 1) != 'T' &&
 		result.ended.substring(0, 4) != '1900'
 	) {
