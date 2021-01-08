@@ -24,11 +24,17 @@ function buildFlagResource(data) {
 	};
 	// Add meta data
 
-	var SiderPermittedSnomedAlerts = ["304253006", "225915006", "704659007", "395073001", "32000005", "713673000", "15188001", "1855002", "13790001000004100", "103735009", "735324008","313214000","248062006"];
+	var SiderPermittedSnomedAlerts = 
+	["304253006", "225915006", "704659007",
+	 "395073001", "32000005", "713673000",
+	 "15188001", "1855002", "13790001000004100", 
+	 "103735009", "735324008","313214000",
+	 "248062006"];
 	var snomedCodeCheck = "";
 	snomedCodeCheck += result.snomed.toString();
 
-	var SiderPermittedLocalAlerts = ["2449"];
+	var SiderPermittedLocalAlerts = 
+	["2449"];
 	var localCodeCheck = "";
 	localCodeCheck += result.lookupInstanceID.toString();
 
