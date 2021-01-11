@@ -141,7 +141,7 @@ function buildEncounterResource(data) {
 		 */
 		
 		const primitiveEncounterType = JSON.parse(JSON.stringify(emptyType));
-		if (result.Service_Code) {
+		if (result.Service) {
 			primitiveEncounterType.coding[0].system = 'https://fhir.nhs.uk/STU3/CodeSystem/Specialty-1'
 			;
 			primitiveEncounterType.coding[0].code = newStringOrUndefined(

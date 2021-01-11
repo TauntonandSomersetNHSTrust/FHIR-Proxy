@@ -6,9 +6,6 @@
 	@param {Object} data - Java RowSet object.
 	@return {Object} Condition FHIR resource.
  */
-
-/* eslint-disable no-unused-vars */
-/* eslint-disable no-undef */
  
 function buildConditionResource(data) {
 	
