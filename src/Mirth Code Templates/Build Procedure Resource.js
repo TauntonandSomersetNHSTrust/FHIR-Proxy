@@ -36,8 +36,52 @@ function buildProcedureResource(data) {
 		code: newStringOrUndefined(result.OPCS4),
 		display: newStringOrUndefined(result.performedProcs)
 	};
-	
+
 	resource.code.coding.push(procedurecode);
+
+	/**
+	* result.bodysite is provided as an array to be processed and applied to the resource.bodySite array.
+	* Array structure is:
+	* system,code,display|system,code,display|system,code,display
+	*/
+	resource.bodySite = [];
+
+	const emptyBodysite = {
+		coding: [
+			{
+				system: undefined,
+				code: undefined,
+				display: undefined
+			}
+		]
+	};
+
+	if (
+		result.bodysite
+	) {
+		
+		const bodysiteSplit = result.bodysite.split('\\|');
+		for (var i=0; i < bodysiteSplit.length; i++){
+			
+			var BodySiteEntry = JSON.parse(JSON.stringify(emptyBodysite));
+			
+			var BodySiteArray = bodysiteSplit[i].toString();
+			
+			var components = BodySiteArray.split('\\,');
+			
+			BodySiteEntry.coding[0].system = newStringOrUndefined(
+				components[0]
+			);
+			BodySiteEntry.coding[0].code = newStringOrUndefined(
+				components[1]
+			);
+			BodySiteEntry.coding[0].display = newStringOrUndefined(
+				components[2]
+			);
+			resource.bodySite.push(BodySiteEntry);
+		}
+	}
+
 	
 	//Datetime of procedure
 	resource.performedDateTime = newStringOrUndefined(result.performedOn);
