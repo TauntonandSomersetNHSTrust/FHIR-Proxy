@@ -35,6 +35,13 @@ function buildResourceQuery(type, SPQuery, reqtype) {
 				case 'read':
 					return executeCachedQuery("EXECUTE [dbo].[sp_FHIR_IMS_Flag_Read] @apiKey = '" + API + "', " + SPQuery);
 			}
+		case 'procedure':
+			switch(''.concat(reqtype)) {
+				case 'search':
+					return executeCachedQuery("EXECUTE [dbo].[sp_FHIR_IMS_Procedures] @apiKey = '" + API + "', " + SPQuery);
+				case 'read':
+					return executeCachedQuery();
+			}
 		case 'medicationstatement':
 			switch(''.concat(reqtype)) {
 				case 'search':
