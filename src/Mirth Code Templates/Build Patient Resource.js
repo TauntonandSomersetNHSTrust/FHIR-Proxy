@@ -79,7 +79,7 @@ function buildPatientResource(data) {
 			}
 		],
 		id: newStringOrUndefined(result.MRN),
-		language: newStringOrUndefined('English (Great Britain)')
+		language: newStringOrUndefined(result.Pref_Lang)
 	};
 
 	// Add meta data
