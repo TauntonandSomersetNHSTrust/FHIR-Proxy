@@ -264,7 +264,20 @@ function buildEncounterResource(data) {
 		 */
 	} 
 	// Unexpected code returned, add no participants
-	else {} 
+	else {}
+
+	// add appointment reference if encounter is for an outpatient Appointment
+	if(
+		result.classCode == 'AMB'
+		)
+	{
+		//Appointment IDs are the same as encounter IDs for outpatients, minus the OP prefix. Remove prefix for reference.
+		var appID = result.Encounter_ID
+		resource.appointment = {
+			reference: $cfg('apiUrl') + '/appointment/' + appID.substring(2)
+		};
+		
+	}
 
 	resource.period = {};
 	if (

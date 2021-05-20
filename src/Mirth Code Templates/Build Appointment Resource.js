@@ -107,7 +107,7 @@ function buildAppointmentResource(data) {
 			valueString: newStringOrUndefined(result.cancellationReason)
 			};
 		}
-	extension.push(ethCatExtension);
+	extension.push(apptcancellationExtension);
 	
 	if (extension.length > 0) {
 		resource.extension = extension;
