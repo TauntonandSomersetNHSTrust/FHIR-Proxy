@@ -26,52 +26,70 @@ function buildAppointmentResource(data) {
 	) {
 		resource.meta.lastUpdated = newStringOrUndefined(result.Last_Updated);
 	}
-	resource.id = newStringOrUndefined(result.patientAppointmentID);
+	resource.id = newStringOrUndefined(result.bookingID);
 
-	resource.status = newStringOrUndefined(result.patientAppointmentstatus);
+	resource.status = newStringOrUndefined(result.status);
 
+    //Specialty
+	if (result.specialtyName) {
+        
+        resource.specialty = [];
 
-	/**
-	 * result.specialty is provided as an array to be processed and applied to the resource.specialty array.
-	 * Array structure is:
-	 * system,code,display|system,code,display|system,code,display
-	 */
+	    const emptySpecialty = {
+	    	coding: [{
+		    	system: undefined,
+			    code: undefined,
+			    display: undefined
+    		}]
+    	};
+    	var specialtyEntry = JSON.parse(JSON.stringify(emptySpecialty));
 
-	resource.specialty = [];
-
-	const emptySpecialty = {
-		coding: [{
-			system: undefined,
-			code: undefined,
-			display: undefined
-		}]
-	};
-
-	if (result.specialty) {
-		const specialtySplit = result.specialty.split('\\|');
-		for (var i = 0; i < specialtySplit.length; i++) {
-			var specialtyEntry = JSON.parse(JSON.stringify(emptySpecialty));
-			var specialtyArray = specialtySplit[i].toString();
-			var components = specialtyArray.split('\\,');
-
-			specialtyEntry.coding[0].system = newStringOrUndefined(
-				components[0]
+        specialtyEntry.coding[0].system = newStringOrUndefined(
+                result.NSCType
 			);
-			specialtyEntry.coding[0].code = newStringOrUndefined(
-				components[1]
+		specialtyEntry.coding[0].code = newStringOrUndefined(
+		    result.NSC
+	    	);
+		specialtyEntry.coding[0].display = newStringOrUndefined(
+			result.specialtyName
 			);
-			specialtyEntry.coding[0].display = newStringOrUndefined(
-				components[2]
-			);
-			resource.specialty.push(BodySiteEntry);
-		}
+		resource.specialty.push(specialtyEntry);
 	}
+    
+    //Service
+	if (result.serviceName) {
+        
+        resource.serviceType = [];
+
+	    const emptyService = {
+	    	coding: [{
+		    	system: undefined,
+			    code: undefined,
+			    display: undefined
+    		}]
+    	};
+    	var serviceEntry = JSON.parse(JSON.stringify(emptyService));
+
+        serviceEntry.coding[0].system = newStringOrUndefined(
+                result.NTCType
+			);
+            serviceEntry.coding[0].code = newStringOrUndefined(
+		    result.NTC
+	    	);
+            serviceEntry.coding[0].display = newStringOrUndefined(
+			result.serviceName
+			);
+		resource.serviceType.push(serviceEntry);
+	}
+    
+    //Priority
+    resource.priority = newStringOrUndefined(result.priorityValue)
 
 
 	//Datetime of Appointment
-	resource.start = newStringOrUndefined(result.start);
-	resource.end = newStringOrUndefined(result.end);
-	resource.minutesDuration = newStringOrUndefined(result.minutesDuration);
+	resource.start = newStringOrUndefined(result.Start_Date);
+	resource.end = newStringOrUndefined(result.End_Date);
+	resource.minutesDuration = newStringOrUndefined(result.duration);
 
 	//Add Patient To Appt
 	resource.participant = [];
@@ -89,8 +107,7 @@ function buildAppointmentResource(data) {
 			}]
 		}],
 		individual: {
-			identifier: result.encounterParticipantIndividualCode_opattending,
-			display: result.seenBy
+			display: result.listOwner
 		}
 	};
 	resource.participant.push(participantConsultant);
@@ -98,17 +115,17 @@ function buildAppointmentResource(data) {
 	//Add Extension
 	const extension = [];
 	
-	// Add Cancellation Reason extension
-	if (result.status==='cancelled') {
-		const apptcancellationExtension = {
-			url: newStringOrUndefined(
-				'https://fhir.hl7.org.uk/STU3/StructureDefinition/Extension-CareConnect-AppointmentCancellationReason-1'
-			),
-			valueString: newStringOrUndefined(result.cancellationReason)
-			};
-		}
-	extension.push(apptcancellationExtension);
-	
+	if (result.status=='cancelled') {
+        // Add Cancellation Reason extension
+        const apptcancellationExtension = {
+            url: newStringOrUndefined(
+                'https://fhir.hl7.org.uk/STU3/StructureDefinition/Extension-CareConnect-AppointmentCancellationReason-1'
+                ),
+            valueString: newStringOrUndefined(result.cancelReason)
+        };
+        extension.push(apptcancellationExtension);
+    }
+    
 	if (extension.length > 0) {
 		resource.extension = extension;
 	}
