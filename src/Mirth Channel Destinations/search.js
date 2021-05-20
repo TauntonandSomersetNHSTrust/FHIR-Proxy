@@ -25,7 +25,8 @@ try {
 		encounter: ['patient'],
 		flag: ['patient'],
 		patient: ['identifier'],
-		procedure: ['patient']
+		procedure: ['patient'],
+		appointment: ['patient']
     };
     
     // If any param not supported, reject request
@@ -44,9 +45,9 @@ try {
 		// GET [baseUrl]/Encounter?patient.identifier=[system]|[code]
 		if($('parameters').contains('patient.identifier')) {
 			if($('parameters').getParameter('patient.identifier').contains('|')) {
-				var encounterPatIdParam = String($('parameters').getParameter('patient.identifier')).split('|');
-				if(encounterPatIdParam[0] === NHSIDtype) {
-					patientNHS = encounterPatIdParam[1];
+				var conditionPatIdParam = String($('parameters').getParameter('patient.identifier')).split('|');
+				if(conditionPatIdParam[0] === NHSIDtype) {
+					patientNHS = conditionPatIdParam[1];
 				}
 			}
 		}
@@ -80,9 +81,9 @@ try {
 		// GET [baseUrl]/Flag?patient.identifier=[system]|[code]
 		if($('parameters').contains('patient.identifier')) {
 			if($('parameters').getParameter('patient.identifier').contains('|')) {
-				var encounterPatIdParam = String($('parameters').getParameter('patient.identifier')).split('|');
-				if(encounterPatIdParam[0] === NHSIDtype) {
-					var patientNHS = encounterPatIdParam[1];
+				var flagPatIdParam = String($('parameters').getParameter('patient.identifier')).split('|');
+				if(flagPatIdParam[0] === NHSIDtype) {
+					var patientNHS = flagPatIdParam[1];
 				}
 			}
 		}
@@ -98,9 +99,27 @@ try {
 		// GET [baseUrl]/Procedure?patient.identifier=[system]|[code]
 		if($('parameters').contains('patient.identifier')) {
 			if($('parameters').getParameter('patient.identifier').contains('|')) {
-				var encounterPatIdParam = String($('parameters').getParameter('patient.identifier')).split('|');
-				if(encounterPatIdParam[0] === NHSIDtype) {
-					patientNHS = encounterPatIdParam[1];
+				var procedurePatIdParam = String($('parameters').getParameter('patient.identifier')).split('|');
+				if(procedurePatIdParam[0] === NHSIDtype) {
+					patientNHS = procedurePatIdParam[1];
+				}
+			}
+		}
+		SPQuery = SPQuery.concat('@nhsNum =\'', patientNHS, '\'');
+	}
+	/**
+	 * =======================
+	 * Appointment search params
+	 * =======================
+	 */
+	if(type == 'appointment') {
+		var patientNHS = "";
+		// GET [baseUrl]/appointment?patient.identifier=[system]|[code]
+		if($('parameters').contains('patient.identifier')) {
+			if($('parameters').getParameter('patient.identifier').contains('|')) {
+				var appointmentPatIdParam = String($('parameters').getParameter('patient.identifier')).split('|');
+				if(appointmentPatIdParam[0] === NHSIDtype) {
+					patientNHS = appointmentPatIdParam[1];
 				}
 			}
 		}
@@ -119,9 +138,9 @@ try {
 		 */
 		if($('parameters').contains('identifier')) {
 			if($('parameters').getParameter('identifier').contains('|')) {
-				var encounterPatIdParam = String($('parameters').getParameter('identifier')).split('|');
-				if(encounterPatIdParam[0] === NHSIDtype) {
-					var patientNHS = encounterPatIdParam[1];
+				var patientPatIdParam = String($('parameters').getParameter('identifier')).split('|');
+				if(patientPatIdParam[0] === NHSIDtype) {
+					var patientNHS = patientPatIdParam[1];
 				}
 			}
 		}
@@ -136,6 +155,9 @@ try {
 		switch(''.concat(type)) {
 			case 'condition':
 				data = buildConditionResource(result);
+				break;
+			case 'appointment':
+				data = buildAppointmentResource(result);
 				break;
 			case 'encounter':
 				data = buildEncounterResource(result);
