@@ -91,12 +91,7 @@ function buildAppointmentResource(data) {
 	resource.end = newStringOrUndefined(result.End_Date);
 	resource.minutesDuration = newStringOrUndefined(result.duration);
 
-	//Add Patient To Appt
-	resource.participant = [];
-	const patientAsParticipant = {
-		reference: $cfg('apiUrl') + '/patient/' + result.MRN
-	};
-	resource.participant.push(patientAsParticipant);
+	if (result.listOwner){
 
 	const participantConsultant = {
 		type: [{
@@ -106,12 +101,13 @@ function buildAppointmentResource(data) {
 				display: 'consultant'
 			}]
 		}],
-		individual: {
+		actor: {
 			display: result.listOwner
-		}
+		},
+		status: 'accepted'
 	};
 	resource.participant.push(participantConsultant);
-	
+	}
 	//Add Extension
 	const extension = [];
 	
