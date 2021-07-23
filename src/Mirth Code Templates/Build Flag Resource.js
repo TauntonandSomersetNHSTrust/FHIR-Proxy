@@ -22,19 +22,24 @@ function buildFlagResource(data) {
 		},
 		resourceType: 'Flag'
 	};
-	// Add meta data
+
+	/**
+	 * Add Metadata.
+	 * For Sider, there are only a few Alert/Flags from the trust that are agreed to be shared from the org.
+	*/
 
 	var SiderPermittedSnomedAlerts = 
-	["304253006","225915006","704659007","429744008","713834002","766561000000109","802251000000109",
-	 "395073001","32000005","713673000","52448006","879911000000102","129839007","721651000000109", 
-	 "15188001","1855002","103735009","304253006","225915006","704659007","395073001",
-	 "735324008","313214000","248062006","32000005","713673000","15188001","1855002",
-	 "115329001","1095151000000107","103735009","735324008","313214000","115329001","1095151000000107"];
+	["32000005","115329001"];
 	var snomedCodeCheck = "";
 	snomedCodeCheck += result.snomed.toString();
 
+	/**
+	 * Local Code is set to a random string while there are no legitimate local codes that are valid.
+	 * This is a bodge to prevent an empty string matching and displaying an alert in Sider that has not been approved.
+	 */
+
 	var SiderPermittedLocalAlerts = 
-	["2449"];
+	["bx79btJLyReMvyGVPxVDfiAeFgWuX7"];
 	var localCodeCheck = "";
 	localCodeCheck += result.lookupInstanceID.toString();
 
