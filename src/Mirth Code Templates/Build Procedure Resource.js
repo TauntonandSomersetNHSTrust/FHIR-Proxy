@@ -34,7 +34,7 @@ function buildProcedureResource(data) {
 	var procedurecode = {
 		system: newStringOrUndefined('https://fhir.nhs.uk/Id/opcs-4'),
 		code: newStringOrUndefined(result.OPCS4),
-		display: newStringOrUndefined(result.performedProcs)
+		display: newStringOrUndefined(result.performedProcedures)
 	};
 
 	resource.code.coding.push(procedurecode);
